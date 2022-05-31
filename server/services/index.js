@@ -23,6 +23,15 @@ module.exports = {
   getContacts: () => {
     return Promise.resolve(contacts);
   },
+  getContact: id => {
+    const contact = contacts.find(contact => contact.id === id);
+
+    if (contact) {
+      return Promise.resolve(contact);
+    }
+
+    return Promise.reject(contact);
+  },
   addContact: contact => {
     if (!contact.name || !contact.email || !contact.phone) {
       return Promise.reject({

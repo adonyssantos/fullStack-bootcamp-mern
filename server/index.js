@@ -1,5 +1,5 @@
 const express = require('express');
-const { getContacts, addContact } = require('./services');
+const { getContacts, getContact, addContact } = require('./services');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -14,6 +14,16 @@ app.get('/api/contacts', (_req, res) => {
   getContacts()
     .then(contacts => {
       res.json(contacts);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
+});
+
+app.get('/api/contacts/:id', (req, res) => {
+  getContact(Number(req.params.id))
+    .then(contact => {
+      res.json(contact);
     })
     .catch(err => {
       res.status(500).json(err);
