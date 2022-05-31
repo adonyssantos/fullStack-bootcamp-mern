@@ -1,23 +1,26 @@
 const express = require('express');
+const { getContacts } = require('./services');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
-  res.send('Welcome to the API!');
+app.get('/api', (_req, res) => {
+  res.send('Welcome to the contacts API!');
 });
 
-app.get('/hello', (req, res) => {
-  res.send('Hello World!');
+app.get('/api/contacts', (_req, res) => {
+  getContacts()
+    .then(contacts => {
+      res.json(contacts);
+    })
+    .catch(err => {
+      res.status(500).json(err);
+    });
 });
 
-app.get('/hello/:name', (req, res) => {
-  res.send(`Hello, ${req.params.name}!`);
-});
-
-app.use((_req, res, next) => {
+app.use((_req, res) => {
   const error = new Error('Not Found');
 
   res.status(404);
@@ -27,7 +30,6 @@ app.use((_req, res, next) => {
     data: null,
     ...error,
   });
-  next(error);
 });
 
 app.use((err, _req, res, _next) => {
@@ -45,5 +47,3 @@ app.use((err, _req, res, _next) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-module.exports = app;
