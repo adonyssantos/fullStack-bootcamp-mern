@@ -1,0 +1,9 @@
+POST http://localhost:3000/api/contacts
+Content-Type: application/json
+
+{
+  "name": "Bob Smith",
+  "phone": "1 (555) 555-5555",
+  "email": "bob@adonys.me"
+}
+

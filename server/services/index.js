@@ -23,4 +23,21 @@ module.exports = {
   getContacts: () => {
     return Promise.resolve(contacts);
   },
+  addContact: contact => {
+    if (!contact.name || !contact.email || !contact.phone) {
+      return Promise.reject({
+        status: 400,
+        message: 'Bad Request',
+      });
+    }
+
+    const newContact = {
+      id: contacts.reduce((maxId, contact) => Math.max(contact.id, maxId), 0) + 1,
+      ...contact,
+    };
+
+    contacts.push(newContact);
+
+    return Promise.resolve(contacts);
+  },
 };
